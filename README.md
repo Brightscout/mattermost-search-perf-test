@@ -1,3 +1,5 @@
+# mattermost-search-analytics
+
 ## Setup instructions
 * In `search.txt`, you can specify the search terms seperated by new line for which the search will be performed. 
 for example - 
