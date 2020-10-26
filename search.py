@@ -95,9 +95,10 @@ def test(args):
 
     # log the minimum, average and maximum reponse time in ms
     response_duration = [record[2] for record in results]
-    logging.info("Mininum response time(in ms): %f", min(response_duration))
-    logging.info("Maximum response time(in ms): %f", max(response_duration))
-    logging.info("Average response time(in ms): %f", mean(response_duration))
+    if len(response_duration) > 0:
+        logging.info("Mininum response time(in ms): %f", min(response_duration))
+        logging.info("Maximum response time(in ms): %f", max(response_duration))
+        logging.info("Average response time(in ms): %f", mean(response_duration))
 
 
 if __name__ == "__main__":

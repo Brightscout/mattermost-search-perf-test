@@ -1,28 +1,44 @@
-# mattermost-search-analytics
+# mattermost-search-perf-test
+A simple utility to perform a series of searches and record the response time of each one. This can be used with different Mattermost search engines (MySQL, ElasticSearch, etc.) to benchmark performance.
 
-## Setup instructions
-* Install python 3.6+ and pip.
-* Run `pip3 install -r requirements.txt` in project directory to install the depedencies.
-* Create a file `.env` and paste the contents of `.env.sample` in it.
+<br>
+
+## Setup Instructions
+* Install Python 3.6+ and pip.
+
+* Clone this repo:
+  ```
+  $ git clone https://github.com/Brightscout/mattermost-search-perf-test
+  ```
+* Install requirements:
+  ```
+  $ pip3 install -r requirements.txt
+  ````
+* Create a `.env` file with the contents of `.env.sample`:
     ```
-    cat .env.sample > .env
+    $ cat .env.sample > .env
     ```
-    * Set mattermost server URL as API_URL. 
-    * Set team name for which you want to perform the search as TEAM_NAME.
-        * team_name is the part of the web address that navigates to your team on the system domain
-        * https://domain.com/team_name/  
-    * Set personal access token as ACCESS_TOKEN.
-        * You have to enable personal access tokens in `System Console > Integrations > Custom Integrations`.
-        * To create a personal access token, go to `Account Settings > Security > Personal Access Tokens` and click `Create New Token`.
-        * You can refer [here](https://docs.mattermost.com/developer/personal-access-tokens.html#personal-access-tokens) to know more about how to create personal access token.
+    Update the following values:
+    ```
+    API_URL=<the URL of your Mattermost site>
+    TEAM_NAME=<name of team to search within. e.g: test-team>
+    ACCESS_TOKEN=<your Mattermost Personal Access Token>
+    ```
+    You can learn more about [Personal Access Tokens here](https://docs.mattermost.com/developer/personal-access-tokens.html#personal-access-tokens).
+
 * Create a search query input file similar to `search.txt.sample`. 
 
-## Run script
-   * Use this command `python test.py <input-file> <output-file>` to generate a report.
-   * if no `<output-file>` is provided, then it will generate a report with filename `<input-file>-timestamp.csv`.
-   * example -<br> 
-       > `python search.py search.txt output.csv
-        `<br>
-        If everything is configured correctly. This command will generate a `output.csv` file and log the info similar to this.<br>
-        ![alt-text](docs/images/img.png)
-        >
+<br>
+
+## Executing the Script
+   * Use this command to run the test and generate a report:
+     ```
+     $ python search.py <input-file> <output-file>
+     ```
+   * If no `<output-file>` is provided, then it will generate a report with the filename 
+   `<input-file>-timestamp.csv`.
+   
+   * For example: <br> 
+      ```
+      $ python search.py search.txt output.csv
+      ```
