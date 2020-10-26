@@ -1,47 +1,59 @@
-import requests
-import sys
-import config
+import calendar
+import csv
 import json
+import sys
+import time
+
+import config
+import requests
 
 
-def test():
+def save_to_csv(filename, fields, rows):
+    with open(filename, 'w') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerow(fields)
+        csvwriter.writerows(rows)
+
+
+def test(args):
+    if(len(args) == 0):
+        raise BaseException('filename is required')
+
     url = "{}/api/v4/teams/{}/posts/search".format(
         config.API_URL, config.TEAM_ID)
     headers = {
         'Authorization': 'Bearer {}'.format(config.ACCESS_TOKEN),
     }
-    f = open("search.txt", "r")
 
-    min_time = 10000
-    max_time = 0
-    total_time = 0
-    total_search_count = 0
+    # field names
+    fields = ['Search', 'Count', 'Time(in ms)']
 
-    # traverse through all the search term in "search.txt"
+    # name of csv file
+    filename = "{}-{}.csv".format(args[0], calendar.timegm(time.gmtime()))
+
+    f = open(args[0], "r")
+
+    results = []
+
+    # traverse through all the search term
     for x in f:
         data = {
             "terms": x,
-            "is_or_search": True
         }
-        try:
-            # fetch search response and calculate response time
-            response = requests.post(
-                url, headers=headers, data=json.dumps(data))
-            if(response.status_code != 200):
-                raise sys.exit("Error: recieved {} from URL with message:{}".format(
-                    response.status_code, response.text))
-            elapsed_seconds = response.elapsed.total_seconds()
-            min_time = min(min_time, elapsed_seconds)
-            max_time = max(max_time, elapsed_seconds)
-            total_time += elapsed_seconds
-            total_search_count += 1
-        except requests.exceptions.RequestException as e:
-            raise sys.exit(e)
+        # fetch search response and store response in results array.
+        response = requests.post(
+            url, headers=headers, data=json.dumps(data))
+        if(response.status_code != 200):
+            raise BaseException("Error: recieved {} from URL with message:{}".format(response.status_code, response.text))
+        elapsed_seconds = response.elapsed.total_seconds()
+        results.append([x, len(response.json()['order']), elapsed_seconds*1000])
 
-    print("Total Time(in ms): {}".format(total_time*1000))
-    print("Average Time(in ms): {}".format(total_time/total_search_count*1000))
-    print("Minimum Respose Time(in ms): {}".format(min_time*1000))
-    print("Maximum Response Time(in ms): {}".format(max_time*1000))
+    # save results to csv
+    save_to_csv(filename, fields, results)
 
 
-test()
+if __name__ == "__main__":
+    try:
+        test(sys.argv[1:])
+    except BaseException as e:
+        print(e)
