@@ -5,6 +5,7 @@ for multiple mattermost search.
 import calendar
 import csv
 import json
+import logging
 import os
 import sys
 import time
@@ -18,6 +19,7 @@ API_URL = os.getenv("API_URL")
 TEAM_ID = os.getenv("TEAM_ID")
 ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
 def save_to_csv(filename, fields, rows):
     """
@@ -47,12 +49,18 @@ def test(args):
     fields = ['search_text', 'count', 'time(in ms)']
 
     # name of csv file
-    filename = "{}-{}.csv".format(args[0], calendar.timegm(time.gmtime()))
+    filename = ''
+    if len(args) == 2:
+        filename = args[1]
+    else:
+        filename = "{} - {}.csv".format(args[0], calendar.timegm(time.gmtime()))
 
     input_file = open(args[0], "r")
 
     results = []
 
+    min_response_time = 10000
+    max_response_time = 0
     # traverse through all the search term
     for term in input_file:
         data = {
@@ -69,13 +77,18 @@ def test(args):
         results.append([term,
                         len(response.json()['order']),
                         elapsed_seconds * 1000])
+        min_response_time = min(min_response_time, elapsed_seconds)
+        max_response_time = max(max_response_time, elapsed_seconds)
 
     # save results to csv
     save_to_csv(filename, fields, results)
 
+    #log the minimum and maximum reponse time in ms
+    logging.info("Mininum response time(in ms): %f", min_response_time*1000)
+    logging.error("Maximum response time(in ms): %f", max_response_time*1000)
 
 if __name__ == "__main__":
     try:
         test(sys.argv[1:])
     except BaseException as error:  # pylint: disable=broad-except
-        print(error)
+        logging.error(error)
