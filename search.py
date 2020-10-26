@@ -9,6 +9,7 @@ import logging
 import os
 import sys
 import time
+from statistics import mean
 
 import requests
 from dotenv import load_dotenv
@@ -43,8 +44,6 @@ def save_to_csv(filename, fields, rows):
         csvwriter.writerow(fields)
         csvwriter.writerows(rows)
 
-#pylint: disable=too-many-locals
-
 
 def test(args):
     """
@@ -75,10 +74,6 @@ def test(args):
 
     results = []
 
-    min_response_time = 10000
-    max_response_time = 0
-    total_response_time = 0
-    total_searches = 0
     # traverse through all the search term
     for term in input_file:
         data = {
@@ -95,18 +90,14 @@ def test(args):
         results.append([term.rstrip(),
                         len(response.json()['order']),
                         elapsed_seconds * 1000])
-        min_response_time = min(min_response_time, elapsed_seconds)
-        max_response_time = max(max_response_time, elapsed_seconds)
-        total_response_time += elapsed_seconds
 
     save_to_csv(filename, fields, results)
 
     # log the minimum, average and maximum reponse time in ms
-    avg_response_time = total_response_time / total_searches
-
-    logging.info("Mininum response time(in ms): %f", min_response_time * 1000)
-    logging.info("Maximum response time(in ms): %f", max_response_time * 1000)
-    logging.info("Average response time(in ms): %f", avg_response_time * 1000)
+    response_duration = [record[2] for record in results]
+    logging.info("Mininum response time(in ms): %f", min(response_duration))
+    logging.info("Maximum response time(in ms): %f", max(response_duration))
+    logging.info("Average response time(in ms): %f", mean(response_duration))
 
 
 if __name__ == "__main__":

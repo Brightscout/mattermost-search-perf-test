@@ -9,6 +9,8 @@
     ```
     * Set mattermost server URL as API_URL. 
     * Set team name for which you want to perform the search as TEAM_NAME.
+        * team_name is the part of the web address that navigates to your team on the system domain
+        * https://domain.com/team_name/  
     * Set personal access token as ACCESS_TOKEN.
         * You have to enable personal access tokens in `System Console > Integrations > Custom Integrations`.
         * To create a personal access token, go to `Account Settings > Security > Personal Access Tokens` and click `Create New Token`.
