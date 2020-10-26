@@ -5,12 +5,18 @@ for multiple mattermost search.
 import calendar
 import csv
 import json
+import os
 import sys
 import time
 
 import requests
+from dotenv import load_dotenv
 
-import config
+load_dotenv()
+
+API_URL = os.getenv("API_URL")
+TEAM_ID = os.getenv("TEAM_ID")
+ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 
 
 def save_to_csv(filename, fields, rows):
@@ -32,13 +38,13 @@ def test(args):
         raise BaseException('filename is required')
 
     url = "{}/api/v4/teams/{}/posts/search".format(
-        config.API_URL, config.TEAM_ID)
+        API_URL, TEAM_ID)
     headers = {
-        'Authorization': 'Bearer {}'.format(config.ACCESS_TOKEN),
+        'Authorization': 'Bearer {}'.format(ACCESS_TOKEN),
     }
 
     # field names
-    fields = ['Search', 'Count', 'Time(in ms)']
+    fields = ['search_text', 'count', 'time(in ms)']
 
     # name of csv file
     filename = "{}-{}.csv".format(args[0], calendar.timegm(time.gmtime()))
@@ -71,5 +77,5 @@ def test(args):
 if __name__ == "__main__":
     try:
         test(sys.argv[1:])
-    except BaseException as error: # pylint: disable=broad-except
+    except BaseException as error:  # pylint: disable=broad-except
         print(error)
