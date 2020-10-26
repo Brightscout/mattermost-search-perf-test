@@ -16,16 +16,27 @@ from dotenv import load_dotenv
 load_dotenv()
 
 API_URL = os.getenv("API_URL")
-TEAM_ID = os.getenv("TEAM_ID")
+TEAM_NAME = os.getenv("TEAM_NAME")
 ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
+
+def get_team_id():
+    """
+    This function return the team_id for TEAM_NAME
+    """
+    url = "{}/api/v4/teams/name/{}".format(API_URL, TEAM_NAME)
+    headers = {
+        'Authorization': 'Bearer {}'.format(ACCESS_TOKEN),
+    }
+    response = requests.get(url, headers=headers)
+    return response.json()['id']
 
 def save_to_csv(filename, fields, rows):
     """
     This function saves a csv file with given fields and rows.
     """
-    with open(filename, 'w') as csvfile:
+    with open(filename, 'w', lineterminator='\n') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(fields)
         csvwriter.writerows(rows)
@@ -39,8 +50,9 @@ def test(args):
     if len(args) == 0:
         raise BaseException('filename is required')
 
+    team_id = get_team_id()
     url = "{}/api/v4/teams/{}/posts/search".format(
-        API_URL, TEAM_ID)
+        API_URL, team_id)
     headers = {
         'Authorization': 'Bearer {}'.format(ACCESS_TOKEN),
     }
@@ -53,7 +65,7 @@ def test(args):
     if len(args) == 2:
         filename = args[1]
     else:
-        filename = "{} - {}.csv".format(args[0], calendar.timegm(time.gmtime()))
+        filename = "{}-{}.csv".format(args[0], calendar.timegm(time.gmtime()))
 
     input_file = open(args[0], "r")
 
