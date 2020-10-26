@@ -21,7 +21,7 @@ A simple utility to perform a series of searches and record the response time of
     Update the following values:
     ```
     API_URL=<the URL of your Mattermost site>
-    TEAM_ID=<name of team to search within>
+    TEAM_NAME=<name of team to search within. e.g: test-team>
     ACCESS_TOKEN=<your Mattermost Personal Access Token>
     ```
     You can learn more about [Personal Access Tokens here](https://docs.mattermost.com/developer/personal-access-tokens.html#personal-access-tokens).
