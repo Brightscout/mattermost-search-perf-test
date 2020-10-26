@@ -35,7 +35,7 @@ A simple utility to perform a series of searches and record the response time of
      ```
      $ python search.py <input-file> <output-file>
      ```
-   * if no `<output-file>` is provided, then it will generate a report with filename 
+   * If no `<output-file>` is provided, then it will generate a report with the filename 
    `<input-file>-timestamp.csv`.
    
    * For example: <br> 
