@@ -8,7 +8,7 @@
     cat .env.sample > .env
     ```
     * Set mattermost server URL as API_URL. 
-    * Set team id for which you want to perform the search as TEAM_ID. You can retrieve team id from the database.
+    * Set team name for which you want to perform the search as TEAM_NAME.
     * Set personal access token as ACCESS_TOKEN.
         * You have to enable personal access tokens in `System Console > Integrations > Custom Integrations`.
         * To create a personal access token, go to `Account Settings > Security > Personal Access Tokens` and click `Create New Token`.
@@ -21,6 +21,6 @@
    * example -<br> 
        > `python search.py search.txt output.csv
         `<br>
-        If everything is configured correctly. This command will generate a `output.csv` file and log the info similar to this.
+        If everything is configured correctly. This command will generate a `output.csv` file and log the info similar to this.<br>
         ![alt-text](docs/images/img.png)
         >
