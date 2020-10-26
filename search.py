@@ -85,7 +85,7 @@ def test(args):
 
     #log the minimum and maximum reponse time in ms
     logging.info("Mininum response time(in ms): %f", min_response_time*1000)
-    logging.error("Maximum response time(in ms): %f", max_response_time*1000)
+    logging.info("Maximum response time(in ms): %f", max_response_time*1000)
 
 if __name__ == "__main__":
     try:
