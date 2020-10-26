@@ -21,6 +21,10 @@
    * example -<br> 
        > `python search.py search.txt output.csv
         `<br>
+<<<<<<< HEAD
         If everything is configured correctly. This command will generate a `output.csv` file and log the info similar to this.<br>
+=======
+        If everything is configured correctly. This command will generate a `output.csv` file and log the info similar to this.
+>>>>>>> 8bed0ad331cd2592057248e3249d1b9a20145d82
         ![alt-text](docs/images/img.png)
         >

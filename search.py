@@ -44,6 +44,8 @@ def save_to_csv(filename, fields, rows):
         csvwriter.writerows(rows)
 
 #pylint: disable=too-many-locals
+
+
 def test(args):
     """
     This function reads a search query file, perform search for each search query
