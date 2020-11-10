@@ -30,7 +30,7 @@ A simple utility to perform a series of searches and record the response time of
 
 <br>
 
-## Executing the Script
+## Executing the python Script
    * Use this command to run the test and generate a report:
      ```
      $ python search.py <input-file> <output-file>
@@ -42,3 +42,14 @@ A simple utility to perform a series of searches and record the response time of
       ```
       $ python search.py search.txt output.csv
       ```
+
+## Executing the bash script(for single search)
+  * To run this script, you only need to set up .env file
+  * Use this command to run the script
+    ```
+    $ sh search.sh <search-term>
+    ```
+  * For example: <br> 
+    ```
+    $ sh search.sh hello world
+    ```
